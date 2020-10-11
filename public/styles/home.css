@@ -1,0 +1,49 @@
+.schedule-container li {
+    color: #003449;
+    font-size: 14px;
+}
+
+.carousel-content {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 20px;
+    position: absolute;
+    bottom: -900%;
+    left: -21%;
+    z-index: 20;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.appointment {
+    flex-direction: row;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+}
+
+.appointment span {
+    color: #003449;
+}
+
+.news-cont h5 {
+    margin-top: 10px;
+    align-self: center;
+    color: #003449;
+}
+
+.news-cont a span {
+    font-size: 17px;
+    color: #003449;
+}
+
+.services a span {
+    font-size: 17px;
+    color: #003449;
+}
+
+.services h5 {
+    margin-top: 10px;
+    align-self: center;
+    color: #003449;
+}
