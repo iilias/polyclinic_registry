@@ -1,0 +1,44 @@
+body {
+    display: flex;
+    justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+fakeimg {
+    height: 200px;
+}
+
+.headblock {
+    padding: 0;
+}
+
+.logo {
+    padding-top: 15px;
+    background-color: rgb(172, 241, 189);
+}
+
+.cont {
+    padding-top: 15px;
+    background-color: rgb(213, 238, 241);
+}
+
+.cont p {
+    font-size: 14px;
+}
+
+.num {
+    padding-top: 15px;
+    background-color: rgb(213, 238, 241);
+}
+
+.num p {
+    font-size: 16px;
+}
+
+header {
+    width: 1000px;
+}
+
+.bg-color {
+    background-color: rgba(0, 52, 73, 1);
+}
