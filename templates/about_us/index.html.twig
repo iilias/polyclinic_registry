@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{Title}}
+{% endblock %}
+{% block stylesheets %}
+	{# <link rel="stylesheet" href="{{ asset('public/styles/home.css') }}"> #}
+{% endblock %}
+
+{% block body %}
+	<div class="container" style="padding-top:15px;">
+		<div class="row align-items-end bg-faded">
+
+
+			<div style="margin-top:10px" class="col-md-8">
+				<div class="card card-block h-100 services">
+					<h4 style="align-self:center;">О поликлинике</h4>
+					<aside class="list-group-item d-flex justify-content-between align-items-center">
+						Это текст. Нажмите один раз и выберите «Редактировать текст» или просто кликните дважды, чтобы добавить свой текст и настроить шрифт. Вы можете переместить его в любое место на странице. Расскажите посетителям сайта о себе. Чтобы удалить этот текст, нажмите один раз и выберите значок «Корзина».<br/><br/>Здесь будет удачно смотреться текст о вашей компании и услугах. Используйте эту возможность, чтобы выгодно представить себя и свою компанию клиентам. Расскажите интересную историю, например, как вам в голову пришла идея собственного дела, и объясните, в чем заключается ваше преимущество перед конкурентами. Приводите увлекательные факты и цифры. Не забудьте про ключевые слова, по которым ваш сайт найдут в поисковых системах.
+					</aside>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+{% endblock %}

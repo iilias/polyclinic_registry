@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{Title}}
+{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('public/styles/signin.css') }}">
+{% endblock %}
+
+{% block body %}
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<div class="wrapper fadeInDown">
+		<div id="formContent">
+			<!-- Tabs Titles -->
+
+			<!-- Icon -->
+				<div class="fadeIn first"> <h1>Вход</h1>
+			</div>
+
+			<!-- Login Form -->
+			<form>
+				<input type="text" id="login" class="fadeIn second" name="login" placeholder="почта">
+				<input type="text" id="password" class="fadeIn third" name="login" placeholder="пароль">
+				<input type="submit" class="fadeIn fourth" value="Log In">
+			</form>
+
+			<!-- Remind Passowrd -->
+			<div id="formFooter">
+				<a class="underlineHover" href="#">Forgot Password?</a>
+			</div>
+
+		</div>
+	</div>
+{% endblock %}
