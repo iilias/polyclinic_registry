@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Destination
  *
  * @ORM\Table(name="destination", uniqueConstraints={@ORM\UniqueConstraint(name="id_reception", columns={"id_reception"}), @ORM\UniqueConstraint(name="id_medicines", columns={"id_medicines"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\DestinationRepository")
  */
 class Destination
 {
@@ -40,6 +40,35 @@ class Destination
      * })
      */
     private $idReception;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getIdMedicines(): ?Medicines
+    {
+        return $this->idMedicines;
+    }
+
+    public function setIdMedicines(?Medicines $idMedicines): self
+    {
+        $this->idMedicines = $idMedicines;
+
+        return $this;
+    }
+
+    public function getIdReception(): ?Reception
+    {
+        return $this->idReception;
+    }
+
+    public function setIdReception(?Reception $idReception): self
+    {
+        $this->idReception = $idReception;
+
+        return $this;
+    }
 
 
 }

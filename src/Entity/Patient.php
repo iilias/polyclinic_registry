@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Patient
  *
  * @ORM\Table(name="patient", uniqueConstraints={@ORM\UniqueConstraint(name="id_address", columns={"id_address"}), @ORM\UniqueConstraint(name="id_account", columns={"id_account"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\PatientRepository")
  */
 class Patient
 {
@@ -82,6 +82,107 @@ class Patient
      * })
      */
     private $idAddress;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(string $surname): self
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getPatronymic(): ?string
+    {
+        return $this->patronymic;
+    }
+
+    public function setPatronymic(string $patronymic): self
+    {
+        $this->patronymic = $patronymic;
+
+        return $this;
+    }
+
+    public function getPassport(): ?string
+    {
+        return $this->passport;
+    }
+
+    public function setPassport(string $passport): self
+    {
+        $this->passport = $passport;
+
+        return $this;
+    }
+
+    public function getPolicy(): ?string
+    {
+        return $this->policy;
+    }
+
+    public function setPolicy(string $policy): self
+    {
+        $this->policy = $policy;
+
+        return $this;
+    }
+
+    public function getBirth(): ?\DateTimeInterface
+    {
+        return $this->birth;
+    }
+
+    public function setBirth(\DateTimeInterface $birth): self
+    {
+        $this->birth = $birth;
+
+        return $this;
+    }
+
+    public function getIdAccount(): ?Account
+    {
+        return $this->idAccount;
+    }
+
+    public function setIdAccount(?Account $idAccount): self
+    {
+        $this->idAccount = $idAccount;
+
+        return $this;
+    }
+
+    public function getIdAddress(): ?Address
+    {
+        return $this->idAddress;
+    }
+
+    public function setIdAddress(?Address $idAddress): self
+    {
+        $this->idAddress = $idAddress;
+
+        return $this;
+    }
 
 
 }

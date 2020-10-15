@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Role
  *
  * @ORM\Table(name="role")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\RoleRepository")
  */
 class Role
 {
@@ -27,6 +27,23 @@ class Role
      * @ORM\Column(name="Title", type="integer", nullable=false)
      */
     private $title;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): ?int
+    {
+        return $this->title;
+    }
+
+    public function setTitle(int $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
 
 
 }

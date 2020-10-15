@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Address
  *
  * @ORM\Table(name="address", uniqueConstraints={@ORM\UniqueConstraint(name="id_quarter", columns={"id_quarter"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\AddressRepository")
  */
 class Address
 {
@@ -44,6 +44,47 @@ class Address
      * })
      */
     private $idQuarter;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getNumber(): ?int
+    {
+        return $this->number;
+    }
+
+    public function setNumber(int $number): self
+    {
+        $this->number = $number;
+
+        return $this;
+    }
+
+    public function getIdQuarter(): ?Quarter
+    {
+        return $this->idQuarter;
+    }
+
+    public function setIdQuarter(?Quarter $idQuarter): self
+    {
+        $this->idQuarter = $idQuarter;
+
+        return $this;
+    }
 
 
 }

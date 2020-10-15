@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Diagnosis
  *
  * @ORM\Table(name="diagnosis", uniqueConstraints={@ORM\UniqueConstraint(name="id_classification", columns={"id_classification"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\DiagnosisRepository")
  */
 class Diagnosis
 {
@@ -44,6 +44,47 @@ class Diagnosis
      * })
      */
     private $idClassification;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getIdClassification(): ?ClassificationDiagnosis
+    {
+        return $this->idClassification;
+    }
+
+    public function setIdClassification(?ClassificationDiagnosis $idClassification): self
+    {
+        $this->idClassification = $idClassification;
+
+        return $this;
+    }
 
 
 }

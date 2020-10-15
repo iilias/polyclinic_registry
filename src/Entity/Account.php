@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Account
  *
  * @ORM\Table(name="account", uniqueConstraints={@ORM\UniqueConstraint(name="id_role", columns={"id_role"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\AccountRepository")
  */
 class Account
 {
@@ -44,6 +44,47 @@ class Account
      * })
      */
     private $idRole;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getIdRole(): ?Role
+    {
+        return $this->idRole;
+    }
+
+    public function setIdRole(?Role $idRole): self
+    {
+        $this->idRole = $idRole;
+
+        return $this;
+    }
 
 
 }

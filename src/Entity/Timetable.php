@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Timetable
  *
  * @ORM\Table(name="timetable", uniqueConstraints={@ORM\UniqueConstraint(name="id_employee", columns={"id_employee"}), @ORM\UniqueConstraint(name="id_days", columns={"id_days"}), @ORM\UniqueConstraint(name="id_cabinet", columns={"id_cabinet"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TimetableRepository")
  */
 class Timetable
 {
@@ -64,6 +64,71 @@ class Timetable
      * })
      */
     private $idEmployee;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getBegin(): ?\DateTimeInterface
+    {
+        return $this->begin;
+    }
+
+    public function setBegin(\DateTimeInterface $begin): self
+    {
+        $this->begin = $begin;
+
+        return $this;
+    }
+
+    public function getEnd(): ?\DateTimeInterface
+    {
+        return $this->end;
+    }
+
+    public function setEnd(\DateTimeInterface $end): self
+    {
+        $this->end = $end;
+
+        return $this;
+    }
+
+    public function getIdCabinet(): ?Cabinet
+    {
+        return $this->idCabinet;
+    }
+
+    public function setIdCabinet(?Cabinet $idCabinet): self
+    {
+        $this->idCabinet = $idCabinet;
+
+        return $this;
+    }
+
+    public function getIdDays(): ?Days
+    {
+        return $this->idDays;
+    }
+
+    public function setIdDays(?Days $idDays): self
+    {
+        $this->idDays = $idDays;
+
+        return $this;
+    }
+
+    public function getIdEmployee(): ?Employee
+    {
+        return $this->idEmployee;
+    }
+
+    public function setIdEmployee(?Employee $idEmployee): self
+    {
+        $this->idEmployee = $idEmployee;
+
+        return $this;
+    }
 
 
 }

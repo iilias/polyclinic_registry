@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Employee
  *
  * @ORM\Table(name="employee", uniqueConstraints={@ORM\UniqueConstraint(name="id_specialty", columns={"id_specialty"}), @ORM\UniqueConstraint(name="id_account", columns={"id_account"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\EmployeeRepository")
  */
 class Employee
 {
@@ -68,6 +68,83 @@ class Employee
      * })
      */
     private $idSpecialty;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(string $surname): self
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getPatronymic(): ?string
+    {
+        return $this->patronymic;
+    }
+
+    public function setPatronymic(string $patronymic): self
+    {
+        $this->patronymic = $patronymic;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getIdAccount(): ?Account
+    {
+        return $this->idAccount;
+    }
+
+    public function setIdAccount(?Account $idAccount): self
+    {
+        $this->idAccount = $idAccount;
+
+        return $this;
+    }
+
+    public function getIdSpecialty(): ?Specialty
+    {
+        return $this->idSpecialty;
+    }
+
+    public function setIdSpecialty(?Specialty $idSpecialty): self
+    {
+        $this->idSpecialty = $idSpecialty;
+
+        return $this;
+    }
 
 
 }
