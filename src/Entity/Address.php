@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Address
  *
- * @ORM\Table(name="address", uniqueConstraints={@ORM\UniqueConstraint(name="id_quarter", columns={"id_quarter"})})
+ * @ORM\Table(name="address", indexes={@ORM\Index(name="id_quarter_2", columns={"id_quarter"})})
  * @ORM\Entity(repositoryClass="App\Repository\AddressRepository")
  */
 class Address

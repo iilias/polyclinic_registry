@@ -22,9 +22,9 @@ class ClassificationDiagnosis
     private $id;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="Title", type="integer", nullable=false)
+     * @ORM\Column(name="Title", type="string", length=25, nullable=false)
      */
     private $title;
 
@@ -40,12 +40,12 @@ class ClassificationDiagnosis
         return $this->id;
     }
 
-    public function getTitle(): ?int
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function setTitle(int $title): self
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 

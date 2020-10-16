@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Account
  *
- * @ORM\Table(name="account", uniqueConstraints={@ORM\UniqueConstraint(name="id_role", columns={"id_role"})})
+ * @ORM\Table(name="account", indexes={@ORM\Index(name="id_role", columns={"id_role"})})
  * @ORM\Entity(repositoryClass="App\Repository\AccountRepository")
  */
 class Account

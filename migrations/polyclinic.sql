@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Окт 15 2020 г., 22:11
+-- Время создания: Окт 16 2020 г., 17:13
 -- Версия сервера: 10.3.13-MariaDB-log
 -- Версия PHP: 7.3.9
 
@@ -48,6 +48,32 @@ CREATE TABLE `address` (
   `id_quarter` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Дамп данных таблицы `address`
+--
+
+INSERT INTO `address` (`id`, `Title`, `Number`, `id_quarter`) VALUES
+(5, 'Ворошилова', 10, 1),
+(7, 'Ленина', 25, 2),
+(8, 'Ворошилова', 25, 1),
+(9, 'Ворошилова', 30, 2),
+(10, 'Суворова', 11, 3),
+(11, 'Суворова', 24, 3),
+(12, 'Комсомольская', 1, 4),
+(13, 'Комсомольская', 5, 4),
+(14, 'Труда', 13, 5),
+(15, 'Труда', 22, 5),
+(16, 'Набережная', 27, 6),
+(17, 'Набережная', 42, 6),
+(18, 'Пушкина', 26, 7),
+(19, 'Пушкина', 32, 7),
+(20, 'Карла Маркса', 57, 8),
+(21, 'Карла Маркса', 63, 8),
+(22, 'Ленина', 164, 9),
+(23, 'Ленина', 51, 9),
+(24, '50-летия Магнитки', 11, 10),
+(25, '50-летия Магнитки', 71, 10);
+
 -- --------------------------------------------------------
 
 --
@@ -79,7 +105,7 @@ CREATE TABLE `cabinet` (
 
 CREATE TABLE `classification_diagnosis` (
   `id` int(11) NOT NULL,
-  `Title` int(25) NOT NULL,
+  `Title` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Description` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -118,6 +144,26 @@ CREATE TABLE `diagnosis` (
   `Description` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `id_classification` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `doctrine_migration_versions`
+--
+
+CREATE TABLE `doctrine_migration_versions` (
+  `version` varchar(191) COLLATE utf8_unicode_ci NOT NULL,
+  `executed_at` datetime DEFAULT NULL,
+  `execution_time` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Дамп данных таблицы `doctrine_migration_versions`
+--
+
+INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
+('DoctrineMigrations\\Version20201015190221', '2020-10-15 19:19:48', 24),
+('DoctrineMigrations\\Version20201015191738', '2020-10-15 19:19:48', 0);
 
 -- --------------------------------------------------------
 
@@ -185,8 +231,24 @@ CREATE TABLE `procedures` (
 
 CREATE TABLE `quarter` (
   `id` int(11) NOT NULL,
-  `Title` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL
+  `Number` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `quarter`
+--
+
+INSERT INTO `quarter` (`id`, `Number`) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
 
 -- --------------------------------------------------------
 
@@ -224,8 +286,17 @@ CREATE TABLE `results` (
 
 CREATE TABLE `role` (
   `id` int(11) NOT NULL,
-  `Title` int(11) NOT NULL
+  `Title` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `role`
+--
+
+INSERT INTO `role` (`id`, `Title`) VALUES
+(1, 'Пациент'),
+(2, 'Врач'),
+(3, 'Администратор');
 
 -- --------------------------------------------------------
 
@@ -263,14 +334,14 @@ CREATE TABLE `timetable` (
 --
 ALTER TABLE `account`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_role` (`id_role`);
+  ADD KEY `id_role` (`id_role`) USING BTREE;
 
 --
 -- Индексы таблицы `address`
 --
 ALTER TABLE `address`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_quarter` (`id_quarter`);
+  ADD KEY `id_quarter_2` (`id_quarter`);
 
 --
 -- Индексы таблицы `analyzes`
@@ -301,23 +372,29 @@ ALTER TABLE `days`
 --
 ALTER TABLE `destination`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_reception` (`id_reception`),
-  ADD UNIQUE KEY `id_medicines` (`id_medicines`);
+  ADD KEY `id_reception` (`id_reception`) USING BTREE,
+  ADD KEY `id_medicines` (`id_medicines`) USING BTREE;
 
 --
 -- Индексы таблицы `diagnosis`
 --
 ALTER TABLE `diagnosis`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_classification` (`id_classification`);
+  ADD KEY `id_classification` (`id_classification`) USING BTREE;
+
+--
+-- Индексы таблицы `doctrine_migration_versions`
+--
+ALTER TABLE `doctrine_migration_versions`
+  ADD PRIMARY KEY (`version`);
 
 --
 -- Индексы таблицы `employee`
 --
 ALTER TABLE `employee`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_specialty` (`id_specialty`),
-  ADD UNIQUE KEY `id_account` (`id_account`);
+  ADD KEY `id_specialty` (`id_specialty`) USING BTREE,
+  ADD KEY `id_account` (`id_account`) USING BTREE;
 
 --
 -- Индексы таблицы `medicines`
@@ -330,8 +407,8 @@ ALTER TABLE `medicines`
 --
 ALTER TABLE `patient`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_address` (`id_address`),
-  ADD UNIQUE KEY `id_account` (`id_account`);
+  ADD KEY `id_address` (`id_address`) USING BTREE,
+  ADD KEY `id_account` (`id_account`) USING BTREE;
 
 --
 -- Индексы таблицы `procedures`
@@ -350,18 +427,18 @@ ALTER TABLE `quarter`
 --
 ALTER TABLE `reception`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_patient` (`id_patient`),
-  ADD UNIQUE KEY `id_employee` (`id_employee`),
-  ADD UNIQUE KEY `id_diagnosis` (`id_diagnosis`);
+  ADD KEY `id_patient` (`id_patient`) USING BTREE,
+  ADD KEY `id_employee` (`id_employee`) USING BTREE,
+  ADD KEY `id_diagnosis` (`id_diagnosis`) USING BTREE;
 
 --
 -- Индексы таблицы `results`
 --
 ALTER TABLE `results`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_reception` (`id_reception`),
-  ADD UNIQUE KEY `id_analyzes` (`id_analyzes`),
-  ADD UNIQUE KEY `id_procedures` (`id_procedures`);
+  ADD KEY `id_reception` (`id_reception`) USING BTREE,
+  ADD KEY `id_analyzes` (`id_analyzes`) USING BTREE,
+  ADD KEY `id_procedures` (`id_procedures`) USING BTREE;
 
 --
 -- Индексы таблицы `role`
@@ -380,9 +457,9 @@ ALTER TABLE `specialty`
 --
 ALTER TABLE `timetable`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_days` (`id_days`),
-  ADD UNIQUE KEY `id_cabinet` (`id_cabinet`),
-  ADD UNIQUE KEY `id_employee` (`id_employee`);
+  ADD KEY `id_days` (`id_days`) USING BTREE,
+  ADD KEY `id_cabinet` (`id_cabinet`) USING BTREE,
+  ADD KEY `id_employee` (`id_employee`) USING BTREE;
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -398,7 +475,7 @@ ALTER TABLE `account`
 -- AUTO_INCREMENT для таблицы `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT для таблицы `analyzes`
@@ -464,7 +541,7 @@ ALTER TABLE `procedures`
 -- AUTO_INCREMENT для таблицы `quarter`
 --
 ALTER TABLE `quarter`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT для таблицы `reception`
@@ -482,7 +559,7 @@ ALTER TABLE `results`
 -- AUTO_INCREMENT для таблицы `role`
 --
 ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `specialty`

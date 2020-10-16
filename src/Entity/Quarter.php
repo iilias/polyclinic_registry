@@ -24,7 +24,7 @@ class Quarter
     /**
      * @var int
      *
-     * @ORM\Column(name="Number", type="string", length=11, nullable=false)
+     * @ORM\Column(name="Number", type="integer", nullable=false)
      */
     private $number;
 

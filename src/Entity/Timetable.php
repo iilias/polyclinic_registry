@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Timetable
  *
- * @ORM\Table(name="timetable", uniqueConstraints={@ORM\UniqueConstraint(name="id_employee", columns={"id_employee"}), @ORM\UniqueConstraint(name="id_days", columns={"id_days"}), @ORM\UniqueConstraint(name="id_cabinet", columns={"id_cabinet"})})
+ * @ORM\Table(name="timetable", indexes={@ORM\Index(name="id_employee", columns={"id_employee"}), @ORM\Index(name="id_days", columns={"id_days"}), @ORM\Index(name="id_cabinet", columns={"id_cabinet"})})
  * @ORM\Entity(repositoryClass="App\Repository\TimetableRepository")
  */
 class Timetable
