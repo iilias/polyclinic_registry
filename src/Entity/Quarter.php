@@ -22,25 +22,25 @@ class Quarter
     private $id;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="Title", type="string", length=25, nullable=false)
+     * @ORM\Column(name="Number", type="string", length=11, nullable=false)
      */
-    private $title;
+    private $number;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getNumber(): ?int
     {
-        return $this->title;
+        return $this->number;
     }
 
-    public function setTitle(string $title): self
+    public function setNumber(int $number): self
     {
-        $this->title = $title;
+        $this->number = $number;
 
         return $this;
     }
