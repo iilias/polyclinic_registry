@@ -38,7 +38,7 @@ class Employee
     /**
      * @var string
      *
-     * @ORM\Column(name="Patronymic", type="string", length=25, nullable=false)
+     * @ORM\Column(name="Patronymic", type="string", length=25, nullable=true)
      */
     private $patronymic;
 

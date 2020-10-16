@@ -19,9 +19,10 @@ class RoleRepository extends ServiceEntityRepository
         parent::__construct($registry, Role::class);
     }
 
-    // /**
-    //  * @return Role[] Returns an array of Role objects
-    //  */
+    /**
+     * @return Role[] Returns an array of Role objects
+     */
+
     /*
     public function findByExampleField($value)
     {
@@ -33,18 +34,15 @@ class RoleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-    }
-    */
+    }*/
 
-    /*
-    public function findOneBySomeField($value): ?Role
+    public function findOneByTitle($value): ?Role
     {
         return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
+            ->andWhere('r.title = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
 }

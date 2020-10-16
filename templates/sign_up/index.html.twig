@@ -3,5 +3,85 @@
 {% block title %}
 	{{Title}}
 {% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('public/styles/signin.css') }}">
+{% endblock %}
 
-{% block body %}{% endblock %}
+{% block body %}
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function () { // convert selects already on the page at dom load
+$('select.form-control').combobox();
+
+$('#it').click(function (e) {
+$('ul.dropdown-menu').toggle();
+});
+
+// $('input').focus(function(e){
+//    $('ul.dropdown-menu').toggle();
+// });
+
+});
+	</script>
+
+	<div class="wrapper fadeInDown">
+		<div id="formContent">
+			<!-- Tabs Titles -->
+
+			<!-- Icon -->
+				<div class="fadeIn first"> <h1>Регистрация</h1>
+			</div>
+
+			<!-- Login Form -->
+			<form action="{{ path('SignUpPost') }}" method="post">
+				<input type="text" id="email" class="fadeIn second" name="email" placeholder="Почта">
+				<input type="text" id="password" class="fadeIn third" name="password" placeholder="Пароль">
+				<input type="text" id="name" class="fadeIn third" name="name" placeholder="Имя">
+				<input type="text" id="surname" class="fadeIn third" name="surname" placeholder="Фамилия">
+				<input type="text" id="passport" class="fadeIn third" name="passport" placeholder="Паспорт">
+				<input type="text" id="policy" class="fadeIn third" name="policy" placeholder="Полис">
+
+				<div class="row" style="width:92%;display:inline-block;">
+					<div class="col-sm-12">
+						<select class="form-control" name="address" id="address">
+							{% for addr in Address %}
+								<option class="dropdown-item" value="{{addr.id}}">{{addr.Title}}
+									{{addr.Number}}, Квартал
+									{{addr.idQuarter.id}}</option>
+							{% endfor %}
+						</select>
+						<br/>
+
+					</div>
+				</div>
+
+
+				<label for="birth">Дата рождения:</label>
+				<input placeholder="MM/DD/YYY" class="fadeIn third" type="date" id="birth" name="birth" value="2018-07-22" min="2018-01-01" max="2018-12-31">
+
+
+				<input type="submit" class="fadeIn fourth" value="Confirm">
+				<input type="hidden" name="token" value="{{ csrf_token('signupme') }}"/>
+			</form>
+
+			<!-- Errors -->
+			{% if Error is defined %}
+				<span style="color:red;">{{Error}}</span>
+			{% endif %}
+
+			{% if ValidateError is defined %}
+				{% for err in ValidateError %}
+					<span style="color:red;">{{ err.message }}</span>
+					<br/>
+				{% endfor %}
+			{% endif %}
+
+			<!-- Remind Passowrd -->
+			<div id="formFooter">
+				<a class="underlineHover" href="#">Forgot Password?</a>
+			</div>
+
+		</div>
+	</div>
+{% endblock %}

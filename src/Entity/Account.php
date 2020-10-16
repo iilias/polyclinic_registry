@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Account
@@ -25,6 +26,16 @@ class Account
      * @var string
      *
      * @ORM\Column(name="Email", type="string", length=55, nullable=false)
+     * @Assert\Email(
+     *      message = "Почта '{{ value }}' не является настоящей."
+     * )
+     * @Assert\NotBlank(message="Email: значение не должно быть пустым")
+     * @Assert\Length(
+     *     min = 5,
+     *     max = 55,
+     *     minMessage = "Email должнен содержать минимум 1 символ",
+     *     maxMessage = "Email должнен содержать максимум 55 символов",
+     * )
      */
     private $email;
 

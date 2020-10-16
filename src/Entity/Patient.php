@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Patient
@@ -25,6 +26,13 @@ class Patient
      * @var string
      *
      * @ORM\Column(name="Surname", type="string", length=25, nullable=false)
+     * @Assert\NotBlank(message="Фамилия: значение не должно быть пустым")
+     * @Assert\Length(
+     *     min = 1,
+     *     max = 25,
+     *     minMessage = "Фамилия должна содержать минимум 1 символ",
+     *     maxMessage = "Фамилия должна содержать максимум 25 символов"
+     * )
      */
     private $surname;
 
@@ -32,13 +40,20 @@ class Patient
      * @var string
      *
      * @ORM\Column(name="Name", type="string", length=25, nullable=false)
+     * @Assert\NotBlank(message="Имя: значение не должно быть пустым")
+     * @Assert\Length(
+     *     min = 1,
+     *     max = 25,
+     *     minMessage = "Имя должно содержать минимум 1 символ",
+     *     maxMessage = "Имя должно содержать максимум 25 символов"
+     * )
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Patronymic", type="string", length=25, nullable=false)
+     * @ORM\Column(name="Patronymic", type="string", length=25, nullable=true)
      */
     private $patronymic;
 
