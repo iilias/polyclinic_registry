@@ -58,16 +58,7 @@ class SignUpController extends AbstractController
             $account->setPassword(password_hash($req->get('password'), PASSWORD_DEFAULT));
             $account->setIdRole($role);
 
-            $errors = $validator->validate($account);
-            if(count($errors) > 0)
-            {
-                return $this->render('sign_up/index.html.twig', [
-                    'controller_name' => 'SignUpController',
-                    'Title' => 'Регистрация',
-                    'Address' => $this->getAddress(),
-                    'ValidateError' => $errors
-                ]);
-            }
+            $AccountError = $validator->validate($account);
 
 
             $patient->setSurname($req->get('surname'));
@@ -78,16 +69,17 @@ class SignUpController extends AbstractController
             $patient->setIdAddress($address);
             $patient->setIdAccount($account);
 
-            $errors = $validator->validate($patient);
+            $PatientError = $validator->validate($patient);
+            $errors = $AccountError;
+            if(count($PatientError) > 0)
+                $errors = $PatientError;
             if(count($errors) > 0)
-            {
                 return $this->render('sign_up/index.html.twig', [
                     'controller_name' => 'SignUpController',
                     'Title' => 'Регистрация',
                     'Address' => $this->getAddress(),
                     'ValidateError' => $errors
                 ]);
-            }
 
             $entityManager->persist($account);
             $entityManager->flush();
