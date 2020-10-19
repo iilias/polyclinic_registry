@@ -25,14 +25,14 @@
 								</div>
 								<div class="userData ml-3">
 									<h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">
-										<a href="javascript:void(0);">Some Name</a>
+										<a href="javascript:void(0);">{{Account.1.getName()|escape}}</a>
 									</h2>
 									<h6 class="d-block">
 										<a href="javascript:void(0)">1,500</a>
-										Video Uploads</h6>
+										Посещений</h6>
 									<h6 class="d-block">
 										<a href="javascript:void(0)">300</a>
-										Blog Posts</h6>
+										Записей</h6>
 								</div>
 								<div class="ml-auto">
 									<input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes"/>
@@ -44,10 +44,13 @@
 							<div class="col-12">
 								<ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
 									<li class="nav-item">
-										<a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Basic Info</a>
+										<a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Информация</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#connectedServices" role="tab" aria-controls="connectedServices" aria-selected="false">Connected Services</a>
+										<a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#connectedServices" role="tab" aria-controls="connectedServices" aria-selected="false">Посещенные приемы</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" id="reception-tab" data-toggle="tab" href="#reception" role="tab" aria-controls="reception" aria-selected="false">Записи на прием</a>
 									</li>
 								</ul>
 								<div class="tab-content ml-1" id="myTabContent">
@@ -56,20 +59,20 @@
 
 										<div class="row">
 											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">Full Name</label>
+												<label style="font-weight:bold;">ФИО</label>
 											</div>
 											<div class="col-md-8 col-6">
-												Jamshaid Kamran
+												{{Account.1.getSurname()|escape}} {{Account.1.getName()|escape}} {{Account.1.getPatronymic()|escape}}
 											</div>
 										</div>
 										<hr/>
 
 										<div class="row">
 											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">Birth Date</label>
+												<label style="font-weight:bold;">Дата рождения</label>
 											</div>
 											<div class="col-md-8 col-6">
-												March 22, 1994.
+												{{Account.1.getBirth()|date('Y-m-d')|escape}}
 											</div>
 										</div>
 										<hr/>
@@ -77,36 +80,72 @@
 
 										<div class="row">
 											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">Something</label>
+												<label style="font-weight:bold;">Адрес</label>
 											</div>
 											<div class="col-md-8 col-6">
-												Something
+												Улица {{Account.1.getIdAddress().Title|escape}}, Дом {{Account.1.getIdAddress().Number|escape}}
 											</div>
 										</div>
 										<hr/>
 										<div class="row">
 											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">Something</label>
+												<label style="font-weight:bold;">Почта</label>
 											</div>
 											<div class="col-md-8 col-6">
-												Something
+												{{Account.0.getEmail()|escape}}
 											</div>
 										</div>
 										<hr/>
 										<div class="row">
 											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">Something</label>
+												<label style="font-weight:bold;">Полис</label>
 											</div>
 											<div class="col-md-8 col-6">
-												Something
+												{{Account.1.getPolicy()|escape}}
+											</div>
+										</div>
+										<hr/>
+										<div class="row">
+											<div class="col-sm-3 col-md-2 col-5">
+												<label style="font-weight:bold;">Паспорт</label>
+											</div>
+											<div class="col-md-8 col-6">
+												{{Account.1.getPassport()|escape}}
 											</div>
 										</div>
 										<hr/>
 
 									</div>
+									
+
+
 									<div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
-										Facebook, Google, Twitter Account that are connected to this account
+										<div class="row">
+											<div class="col-sm-3 col-md-2 col-5">
+												<label style="font-weight:bold;">ФИО</label>
+											</div>
+											<div class="col-md-8 col-6">
+												{{Account.1.getSurname()|escape}} {{Account.1.getName()|escape}} {{Account.1.getPatronymic()|escape}}
+											</div>
+										</div>
+										<hr/>
 									</div>
+
+
+									<div class="tab-pane fade" id="reception" role="tabpanel" aria-labelledby="reception-tab">
+										<div class="row">
+											<div class="col-sm-3 col-md-2 col-5">
+												<label style="font-weight:bold;">ФИО</label>
+											</div>
+											<div class="col-md-8 col-6">
+												{{Account.1.getSurname()|escape}} {{Account.1.getName()|escape}} {{Account.1.getPatronymic()|escape}}
+											</div>
+										</div>
+										<hr/>
+									</div>
+
+
+
 								</div>
 							</div>
 						</div>

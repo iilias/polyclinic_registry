@@ -38,8 +38,16 @@ class SignUpController extends AbstractController
     /**
      * @Route("/sign/up/post", name="SignUpPost", methods={"POST"})
      */
-    public function postSignIp(Request $req, ValidatorInterface $validator)
+    public function postSignUp(Request $req, ValidatorInterface $validator)
     {
+    	// Check email contains
+    	$email_check = $this->getDoctrine()
+    				->getRepository(Account::class)
+    				->findOneByEmail($req->get('email'));
+    	if(isset($email_check))
+    		return $this->redirect('/sign/up/get?error=Введенная почта уже занята');
+
+    	// Check form validation
         $submittedToken = $req->request->get('token');
         if($this->isCsrfTokenValid('signupme', $submittedToken))
         {
@@ -95,7 +103,7 @@ class SignUpController extends AbstractController
     /**
      * @Route("/sign/up/get", name="SignUpGet", methods={"GET"})
      */
-    public function getSignIp(Request $req, ValidatorInterface $validator)
+    public function getSignUp(Request $req, ValidatorInterface $validator)
     {
         $errors = $req->get('error');
         return $this->render('sign_up/index.html.twig', [

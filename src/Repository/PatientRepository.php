@@ -19,9 +19,20 @@ class PatientRepository extends ServiceEntityRepository
         parent::__construct($registry, Patient::class);
     }
 
-    // /**
-    //  * @return Patient[] Returns an array of Patient objects
-    //  */
+    /**
+     * @return Patient[] Returns an array of Patient objects
+     */
+
+    public function findOneByAccountId($value): ?Patient
+    {
+       return $this->createQueryBuilder('a')
+           ->andWhere('a.idAccount = :val')
+           ->setParameter('val', $value)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+    }
+
     /*
     public function findByExampleField($value)
     {

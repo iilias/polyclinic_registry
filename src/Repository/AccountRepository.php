@@ -19,10 +19,31 @@ class AccountRepository extends ServiceEntityRepository
         parent::__construct($registry, Account::class);
     }
 
-    // /**
-    //  * @return Account[] Returns an array of Account objects
-    //  */
+    public function findOneByEmail($value): ?Account
+    {
+       return $this->createQueryBuilder('a')
+           ->andWhere('a.email = :val')
+           ->setParameter('val', $value)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+    }
+
+    public function findOneByPassword($value): ?Account
+    {
+       return $this->createQueryBuilder('a')
+           ->andWhere('a.password = :val')
+           ->setParameter('val', $value)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+    }
+
+    /**
+     * @return Account[] Returns an array of Account objects
+     *
     /*
+
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('a')
