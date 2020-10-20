@@ -19,9 +19,19 @@ class DaysRepository extends ServiceEntityRepository
         parent::__construct($registry, Days::class);
     }
 
-    // /**
-    //  * @return Days[] Returns an array of Days objects
-    //  */
+    /**
+     * @return Days[] Returns an array of Days objects
+     */
+
+    public function findAll()
+    {
+        return $this->createQueryBuilder('d')
+            ->orderBy('d.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /*
     public function findByExampleField($value)
     {

@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{Title}}
+{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('public/styles/profile.css') }}">
+{% endblock %}
+
+{% block body %}
+	<div class="container" style="padding-top:10px;">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+
+					<div class="card-body">
+						<div class="card-title mb-4">
+							<div class="d-flex justify-content-start">
+								<div class="image-container">
+									<img src="https://image.flaticon.com/icons/png/512/37/37943.png" id="imgProfile" style="width: 150px; height: 150px" class="img-thumbnail"/>
+
+								</div>
+								<div class="userData ml-3">
+									<h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">
+										<a href="javascript:void(0);">
+											{{Employee.getSurname()|escape}}
+											{{Employee.getName()|escape}}
+											{{Employee.getPatronymic()|escape}}
+										</a>
+									</h2>
+									<span class="d-block" style="font-weight: bold">
+										Врач -
+										<a href="#">{{Employee.getIdSpecialty().getTitle()|escape}}</a>
+									</span>
+								</div>
+								<div class="ml-auto">
+									<input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-12">
+								<ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+									{% for day in Days %}
+										{% if day.getTitle() == "Понедельник" %}
+											<li class="nav-item">
+												<a class="nav-link active" id="{{day.getTitle()|escape}}-tab" data-toggle="tab" href="#{{day.getTitle()|escape}}" role="tab" aria-controls="{{day.getTitle()|escape}}" aria-selected="true">{{day.getTitle()|escape}}</a>
+											</li>
+										{% else %}
+											<li class="nav-item">
+												<a class="nav-link" id="{{day.getTitle()|escape}}-tab" data-toggle="tab" href="#{{day.getTitle()|escape}}" role="tab" aria-controls="{{day.getTitle()|escape}}" aria-selected="false">{{day.getTitle()|escape}}</a>
+											</li>
+										{% endif %}
+									{% endfor %}
+								</ul>
+								<div class="tab-content ml-1" id="myTabContent">
+
+									{% for day in Days %}
+										{% if day.getTitle() == "Понедельник" %}
+											<div class="tab-pane fade show active" id="{{day.getTitle()}}" role="tabpanel" aria-labelledby="{{day.getTitle()}}-tab">
+
+												<div class="row">
+
+													<div class="col-sm-3 col-md-2 col-5">
+														<label style="font-weight:bold;">Время записи</label>
+													</div>
+													<div class="col-md-8 col-6">
+														{% if TimeList[day.getId()] is defined %}
+															{% for time in TimeList[day.getId()] %}
+																<span>
+																	<a href="#">{{time}}</a>
+																</span>
+															{% endfor %}
+														{% endif %}
+													</div>
+												</div>
+												<hr/>
+
+											</div>
+										{% else %}
+											<div class="tab-pane fade" id="{{day.getTitle()}}" role="tabpanel" aria-labelledby="{{day.getTitle()}}-tab">
+												<div class="row">
+													<div class="col-sm-3 col-md-2 col-5">
+														<label style="font-weight:bold;">Время записи</label>
+													</div>
+													<div class="col-md-8 col-6">
+														{% if TimeList[day.getId()] is defined %}
+															{% for time in TimeList[day.getId()] %}
+																<span>
+																	<a href="#">{{time}}</a>
+																</span>
+															{% endfor %}
+														{% endif %}
+													</div>
+
+												</div>
+												<hr/>
+
+											</div>
+										{% endif %}
+
+									{% endfor %}
+
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

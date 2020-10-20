@@ -27,7 +27,46 @@ class EmployeeRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('e')
             ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findById($id) : ?Employee
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.id = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function findMatchesBySpecialty($spec, $value)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.idSpecialty = :sp')
+            ->orWhere('e.surname LIKE :val')
+            ->orWhere('e.name LIKE :val')
+            ->orWhere('e.patronymic LIKE :val')
+            ->orWhere('e.phone LIKE :val')
+            ->setParameter('val', $value)
+            ->setParameter('sp', $spec)
+            ->orderBy('e.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findMatches($value)
+    {
+        return $this->createQueryBuilder('e')
+            ->orWhere('e.surname LIKE :val')
+            ->orWhere('e.name LIKE :val')
+            ->orWhere('e.patronymic LIKE :val')
+            ->orWhere('e.phone LIKE :val')
+            ->setParameter('val', '%'.$value.'%')
+            ->orderBy('e.id', 'ASC')
             ->getQuery()
             ->getResult()
             ;

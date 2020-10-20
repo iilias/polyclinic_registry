@@ -21,4 +21,14 @@
 .employee-data {
     display: flex;
     flex-direction: column;
+    margin-left: 15px;
+}
+
+.recept-button {
+    width: 120px;
+}
+
+.navigation-block {
+    margin-bottom: 15px;
+    padding: 20px;
 }

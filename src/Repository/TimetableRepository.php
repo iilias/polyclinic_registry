@@ -19,9 +19,21 @@ class TimetableRepository extends ServiceEntityRepository
         parent::__construct($registry, Timetable::class);
     }
 
-    // /**
-    //  * @return Timetable[] Returns an array of Timetable objects
-    //  */
+    /**
+     * @return Timetable[] Returns an array of Timetable objects
+     */
+
+    public function findByIdEmployee($id)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.idEmployee = :id')
+            ->setParameter('id', $id)
+            ->orderBy('t.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /*
     public function findByExampleField($value)
     {

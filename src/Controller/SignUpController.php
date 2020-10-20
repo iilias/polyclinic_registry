@@ -40,17 +40,18 @@ class SignUpController extends AbstractController
      */
     public function postSignUp(Request $req, ValidatorInterface $validator)
     {
-    	// Check email contains
-    	$email_check = $this->getDoctrine()
-    				->getRepository(Account::class)
-    				->findOneByEmail($req->get('email'));
-    	if(isset($email_check))
-    		return $this->redirect('/sign/up/get?error=Введенная почта уже занята');
-
-    	// Check form validation
         $submittedToken = $req->request->get('token');
+        // Check form validation
         if($this->isCsrfTokenValid('signupme', $submittedToken))
         {
+            // Check email contains
+            $email_check = $this->getDoctrine()
+                        ->getRepository(Account::class)
+                        ->findOneByEmail($req->get('email'));
+            if(isset($email_check))
+                return $this->redirect('/sign/up/get?error=Введенная почта уже занята');
+
+
             $entityManager = $this->getDoctrine()->getManager();
 
             $account = new Account();

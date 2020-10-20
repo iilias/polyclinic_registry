@@ -10,6 +10,25 @@
 {% block body %}
 	<div class="container" style="padding-top:15px;">
 		<div class="row align-items-end bg-faded">
+			<div class="col-md-12">
+				<form action="{{ path('ReceptionFind') }}" method="post">
+					<div class="card card-block h-100 navigation-block">
+						<div class="form-group">
+							<label for="spc">Специальность</label>
+							<select class="form-control" id="spc" name="spc">
+								<option value="Все специальности">Все специальности</option>
+								{% for specialty in Specialtys %}
+									<option value="{{specialty.getId()}}">{{specialty.getTitle()}}</option>
+								{% endfor %}
+							</select>
+							<br/>
+							<input type="text" class="form-control" id="empl-data" placeholder="Введите данные сотрудника" name="empl-data">
+						</div>
+						<input type="hidden" name="token" value="{{ csrf_token('findempl') }}"/>
+						<input type="submit" class="btn btn-primary mb-2" value="Поиск"/>
+					</div>
+				</form>
+			</div>
 			<div class="col-md-8 employess-block">
 				{% for employee in Employees %}
 					<div class="card card-block h-100 employee-block">
@@ -26,10 +45,14 @@
 									{{employee.getPhone()|escape}}
 								</span>
 								<span>
+									Почта:
+									{{employee.getIdAccount().getEmail()|escape}}
+								</span>
+								<span>
 									Специальность:
 									<a href="/about/specialty/{{employee.getIdSpecialty().getId()}}">{{employee.getIdSpecialty().getTitle()|escape}}</a>
 								</span>
-								<a href="">Записаться</a>
+								<a href="{{path('ReceptionDate', {id: employee.getId() }) }}" class="btn btn-outline-success recept-button" style="margin-top:10px;">Далее</a>
 							</div>
 						</aside>
 					</div>
