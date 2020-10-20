@@ -19,9 +19,20 @@ class EmployeeRepository extends ServiceEntityRepository
         parent::__construct($registry, Employee::class);
     }
 
-    // /**
-    //  * @return Employee[] Returns an array of Employee objects
-    //  */
+    /**
+     * @return Employee[] Returns an array of Employee objects
+     */
+
+    public function findAll()
+    {
+        return $this->createQueryBuilder('e')
+            ->orderBy('e.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /*
     public function findByExampleField($value)
     {

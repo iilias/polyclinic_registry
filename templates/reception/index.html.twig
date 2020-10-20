@@ -1,7 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{Title}}{% endblock %}
+{% block title %}
+	{{Title}}
+{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('public/styles/reception.css') }}">
+{% endblock %}
 
 {% block body %}
+	<div class="container" style="padding-top:15px;">
+		<div class="row align-items-end bg-faded">
+			<div class="col-md-8 employess-block">
+				{% for employee in Employees %}
+					<div class="card card-block h-100 employee-block">
+						<aside class="about-employee">
+							<img width="100" height="90" src="https://image.flaticon.com/icons/png/512/37/37943.png"/>
+							<div class="employee-data">
+								<h5>
+									{{employee.getSurname()|escape}}
+									{{employee.getName()|escape}}
+									{{employee.getPatronymic()|escape}}
+								</h5>
+								<span>
+									Телефон:
+									{{employee.getPhone()|escape}}
+								</span>
+								<span>
+									Специальность:
+									<a href="/about/specialty/{{employee.getIdSpecialty().getId()}}">{{employee.getIdSpecialty().getTitle()|escape}}</a>
+								</span>
+								<a href="">Записаться</a>
+							</div>
+						</aside>
+					</div>
+				{% endfor %}
+			</div>
 
+		</div>
+	</div>
 {% endblock %}

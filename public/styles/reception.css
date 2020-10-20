@@ -1,0 +1,24 @@
+.employee-block {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.employess-block {
+    float: none;
+    margin: 0 auto;
+}
+
+.employee-block:hover {
+    background-color: rgb(219, 219, 219);
+}
+
+.about-employee {
+    padding: 10px;
+    display: flex;
+}
+
+.employee-data {
+    display: flex;
+    flex-direction: column;
+}

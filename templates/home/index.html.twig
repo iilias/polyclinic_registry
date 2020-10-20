@@ -106,37 +106,16 @@
 
 			<div style="margin-top:10px" class="col-md-6">
 				<div class="card card-block h-100 services">
-					<h5>Услуги</h5>
-					<aside class="list-group-item d-flex justify-content-between align-items-center">
-						<a href="#">
-							<span>Терапия.</span>
-						</a>
-					</aside>
-					<aside class="list-group-item d-flex justify-content-between align-items-center">
-						<a href="#">
-							<span>Иммунология.</span>
-						</a>
-					</aside>
-					<aside class="list-group-item d-flex justify-content-between align-items-center">
-						<a href="#">
-							<span>Педиатрия.</span>
-						</a>
-					</aside>
-					<aside class="list-group-item d-flex justify-content-between align-items-center">
-						<a href="#">
-							<span>Гинекология.</span>
-						</a>
-					</aside>
-					<aside class="list-group-item d-flex justify-content-between align-items-center">
-						<a href="#">
-							<span>Кардиология.</span>
-						</a>
-					</aside>
-					<aside class="list-group-item d-flex justify-content-between align-items-center">
-						<a href="#">
-							<span>Терапия.</span>
-						</a>
-					</aside>
+					<h5>Специалисты</h5>
+					{% for specialty in specialtys %}
+						<aside
+							class="list-group-item d-flex justify-content-between align-items-center">
+							<!-- set path -->
+							<a href="/about/specialty/{{specialty.getId()}}">
+								<span>{{specialty.getTitle()}}</span>
+							</a>
+						</aside>
+					{% endfor %}
 				</div>
 			</div>
 

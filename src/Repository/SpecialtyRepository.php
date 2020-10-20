@@ -19,9 +19,20 @@ class SpecialtyRepository extends ServiceEntityRepository
         parent::__construct($registry, Specialty::class);
     }
 
-    // /**
-    //  * @return Specialty[] Returns an array of Specialty objects
-    //  */
+    /**
+     * @return Specialty[] Returns an array of Specialty objects
+     */
+
+    public function findAll()
+    {
+        return $this->createQueryBuilder('s')
+            ->orderBy('s.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /*
     public function findByExampleField($value)
     {
