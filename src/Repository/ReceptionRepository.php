@@ -19,9 +19,22 @@ class ReceptionRepository extends ServiceEntityRepository
         parent::__construct($registry, Reception::class);
     }
 
-    // /**
-    //  * @return Reception[] Returns an array of Reception objects
-    //  */
+    /**
+     * @return Reception[] Returns an array of Reception objects
+     */
+
+    public function findOneByDateTime($date, $time): ?Reception
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.date = :val')
+            ->andWhere('r.time = :val2')
+            ->setParameter('val', $date)
+            ->setParameter('val2', $time)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
     /*
     public function findByExampleField($value)
     {

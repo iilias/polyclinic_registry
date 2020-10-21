@@ -12,6 +12,7 @@ use App\Entity\Employee;
 use App\Entity\Specialty;
 use App\Entity\Days;
 use App\Entity\Timetable;
+use App\Entity\Reception;
 
 class ReceptionController extends AbstractController
 {
@@ -94,14 +95,57 @@ class ReceptionController extends AbstractController
             ->getRepository(Timetable::class)
             ->findByIdEmployee($id);
 
+        $day = date('w');
+        // Получаю дату предыдущего
+        // воскресенья
+        $week_start = date('Y-m-d', strtotime('-'.$day.' days'));
+        // Дата предыдущего воскресенья
+        // + 1 день ( Дата текущего понедельника )
+        $next_date = date("Y-m-d", strtotime($week_start.'+ 1 days'));
+
+        $days_array = array();
+        foreach ($days as $day)
+        {
+            $days_array += [$day->getId() => $next_date];
+            // Увеличить дату на 1 день
+            $next_date = date("Y-m-d", strtotime($next_date.'+ 1 days'));
+        }
+
         $timelist = array();
         foreach ($timetables as $time)
         {
+            // Разбдробить промежуток из бд
+            // на каждые 15 минут
             $arr_of_time = $this->getArrayTime(
                 $time->getBegin()->format('H:i'),
                 $time->getEnd()->format('H:i'));
-            $timelist = [$time->getIdDays()->getId() => $arr_of_time];
+
+            if(
+                $days_array[$time->getIdDays()->getId()]
+                <
+                date('Y-m-d'))
+                continue;
+
+            // Для каждого времени записи
+            // если в бд уже есть записть на это
+            // время -> удалить элемент
+            foreach ($arr_of_time as $key => $currentTime)
+            {
+                $currentDateReception = $this->getDoctrine()
+                    ->getRepository(Reception::class)
+                    ->findOneByDateTime(
+                        $days_array[$time->getIdDays()->getId()],
+                        $currentTime);
+                if(isset($currentDateReception))
+                    unset($arr_of_time[$key]);
+            }
+
+
+            // Список из номера дня и списка
+            // промежутков
+            $timelist += [$time->getIdDays()->getId() => $arr_of_time];
         }
+
 
         return $this->render('reception/recept.html.twig', [
             'controller_name' => 'ReceptionController',

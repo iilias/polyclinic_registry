@@ -4,7 +4,7 @@
 	{{Title}}
 {% endblock %}
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('public/styles/profile.css') }}">
+	<link rel="stylesheet" href="{{ asset('public/styles/reception.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -63,13 +63,13 @@
 												<div class="row">
 
 													<div class="col-sm-3 col-md-2 col-5">
-														<label style="font-weight:bold;">Время записи</label>
+														<label style="font-weight:bold;">Доступные записи</label>
 													</div>
-													<div class="col-md-8 col-6">
+													<div class="col-md-8 col-6 times">
 														{% if TimeList[day.getId()] is defined %}
 															{% for time in TimeList[day.getId()] %}
-																<span>
-																	<a href="#">{{time}}</a>
+																<span class="time-block">
+																	<a class="time" href="#">{{time}}</a>
 																</span>
 															{% endfor %}
 														{% endif %}
@@ -82,13 +82,13 @@
 											<div class="tab-pane fade" id="{{day.getTitle()}}" role="tabpanel" aria-labelledby="{{day.getTitle()}}-tab">
 												<div class="row">
 													<div class="col-sm-3 col-md-2 col-5">
-														<label style="font-weight:bold;">Время записи</label>
+														<label style="font-weight:bold;">Доступные записи</label>
 													</div>
-													<div class="col-md-8 col-6">
+													<div class="col-md-8 col-6 times">
 														{% if TimeList[day.getId()] is defined %}
 															{% for time in TimeList[day.getId()] %}
-																<span>
-																	<a href="#">{{time}}</a>
+																<span class="time-block">
+																	<a class="time" href="#">{{time}}</a>
 																</span>
 															{% endfor %}
 														{% endif %}
