@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Entity\Patient;
+use App\Entity\Employee;
 use App\Entity\Account;
 use App\Entity\Role;
 use App\Entity\Address;
@@ -48,16 +49,23 @@ class SignInController extends AbstractController
             if(!isset($account))
                 return $this->redirect('/sign/in/get?error=Неверная почта или пароль');
 
-            $patient = $this->getDoctrine()
-                    ->getRepository(Patient::class)
+            $user = $this->getDoctrine()
+                ->getRepository(Patient::class)
+                ->findOneByAccountId($account->getId());
+
+            if($account->getIdRole()->getTitle() == 'Врач')
+            {
+                $user = $this->getDoctrine()
+                    ->getRepository(Employee::class)
                     ->findOneByAccountId($account->getId());
+            }
 
             $entityManager = $this->getDoctrine()->getManager();
 
             $password = $req->get('password');
             if(password_verify($password, $account->getPassword()))
             {
-                $this->session->set('Account', [$account, $patient]);
+                $this->session->set('Account', [$account, $user]);
                 return $this->redirect('/profile');
             }
             return $this->redirect('/sign/in/get?error=Неверная почта или пароль');       

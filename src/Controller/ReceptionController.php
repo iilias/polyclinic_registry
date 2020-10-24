@@ -79,7 +79,7 @@ class ReceptionController extends AbstractController
     /**
      * @Route("/reception/date/{id}", name="ReceptionDate")
      */
-    public function receptDate($id)
+    public function receptDate($id, Request $req)
     {
         if (!isset($this->session->get('Account')[0]))
             return $this->redirect('/sign/in/');
@@ -161,6 +161,15 @@ class ReceptionController extends AbstractController
         }
 
 
+        $editMode = false;
+        $idEdit = 0;
+        if(!empty($req->get('Edit')))
+        {
+            $editMode = true;
+            $idEdit = $req->get('Edit');
+        }
+
+
         return $this->render('reception/recept.html.twig', [
             'controller_name' => 'ReceptionController',
             'Title' => 'Выбор времени приема',
@@ -168,16 +177,28 @@ class ReceptionController extends AbstractController
             'Days' => $days,
             'TimeList' => $timelist,
             'DaysArray' => $days_array,
+            'EditMode' => $editMode,
+            'ToEdit' => $idEdit
         ]);
     }
 
     /**
      * @Route("/reception/date/{date}/time/{time}/empl/{empl}", name="Recept")
      */
-    public function receptPatient($date, $time, $empl)
+    public function receptPatient($date, $time, $empl, Request $req)
     {
     	if (!isset($this->session->get('Account')[0]))
             return $this->redirect('/sign/in/');
+
+        if($req->get('Edit') == true)
+        {
+            $entityManager = $this->getDoctrine()->getManager();
+            $reception = $this->getDoctrine()
+                ->getRepository(Reception::class)
+                ->findById($req->get('ReceptId'));
+            $entityManager->remove($reception);
+            $entityManager->flush();
+        }
 
         $employee = $this->getDoctrine()
             ->getRepository(Employee::class)

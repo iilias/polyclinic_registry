@@ -32,6 +32,16 @@ class EmployeeRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findOneByAccountId($id) : ?Employee
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.idAccount = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
     public function findById($id) : ?Employee
     {
         return $this->createQueryBuilder('e')
