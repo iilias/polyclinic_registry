@@ -34,6 +34,19 @@ class TimetableRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findByIdDayEmployee($id, $day)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.idEmployee = :id')
+            ->andWhere('t.idDays = :d')
+            ->setParameter('id', $id)
+            ->setParameter('d', $day)
+            ->orderBy('t.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /*
     public function findByExampleField($value)
     {

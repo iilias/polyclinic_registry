@@ -69,7 +69,7 @@
 														{% if TimeList[day.getId()] is defined %}
 															{% for time in TimeList[day.getId()] %}
 																<span class="time-block">
-																	<a class="time" href="#">{{time}}</a>
+																	<a class="time" href="{{path('Recept', {date:DaysArray[day.getId()],time:time,empl:Employee.getId()})}}">{{time}}</a>
 																</span>
 															{% endfor %}
 														{% endif %}
@@ -88,7 +88,7 @@
 														{% if TimeList[day.getId()] is defined %}
 															{% for time in TimeList[day.getId()] %}
 																<span class="time-block">
-																	<a class="time" href="#">{{time}}</a>
+																	<a class="time" href="{{path('Recept', {date:DaysArray[day.getId()],time:time,empl:Employee.getId()})}}">{{time}}</a>
 																</span>
 															{% endfor %}
 														{% endif %}

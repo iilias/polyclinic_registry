@@ -32,6 +32,16 @@ class DaysRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findOneByTitle($value): ?Days
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.title = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
     /*
     public function findByExampleField($value)
     {

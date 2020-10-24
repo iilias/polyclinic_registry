@@ -65,6 +65,24 @@ class Reception
      */
     private $idPatient;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="visited", type="integer", nullable=true)
+     */
+    private  $visited;
+
+    public function getVisited() :?int
+    {
+        return $this->visited;
+    }
+
+    public function setVisited($visited): self
+    {
+        $this->visited = $visited;
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

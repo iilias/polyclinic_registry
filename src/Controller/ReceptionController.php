@@ -13,6 +13,7 @@ use App\Entity\Specialty;
 use App\Entity\Days;
 use App\Entity\Timetable;
 use App\Entity\Reception;
+use App\Entity\Patient;
 
 class ReceptionController extends AbstractController
 {
@@ -103,13 +104,23 @@ class ReceptionController extends AbstractController
         // + 1 день ( Дата текущего понедельника )
         $next_date = date("Y-m-d", strtotime($week_start.'+ 1 days'));
 
+        // Если тек. день суббота или воскресенье ->
+        // расписание на следующую неделю
+        if(date('w') == 6 || date('w') == 7)
+        {
+            $date = strtotime("next monday");
+            $next_date = date('Y-m-d', $date);
+        }
+
         $days_array = array();
         foreach ($days as $day)
         {
+
             $days_array += [$day->getId() => $next_date];
             // Увеличить дату на 1 день
             $next_date = date("Y-m-d", strtotime($next_date.'+ 1 days'));
         }
+
 
         $timelist = array();
         foreach ($timetables as $time)
@@ -121,9 +132,11 @@ class ReceptionController extends AbstractController
                 $time->getEnd()->format('H:i'));
 
             if(
-                $days_array[$time->getIdDays()->getId()]
-                <
-                date('Y-m-d'))
+                ($days_array[$time->getIdDays()->getId()]
+                    <
+                    date('Y-m-d')
+                )
+            )
                 continue;
 
             // Для каждого времени записи
@@ -135,7 +148,8 @@ class ReceptionController extends AbstractController
                     ->getRepository(Reception::class)
                     ->findOneByDateTime(
                         $days_array[$time->getIdDays()->getId()],
-                        $currentTime);
+                        $currentTime,
+                        $empl->getId());
                 if(isset($currentDateReception))
                     unset($arr_of_time[$key]);
             }
@@ -153,7 +167,49 @@ class ReceptionController extends AbstractController
             'Employee' => $empl,
             'Days' => $days,
             'TimeList' => $timelist,
+            'DaysArray' => $days_array,
         ]);
+    }
+
+    /**
+     * @Route("/reception/date/{date}/time/{time}/empl/{empl}", name="Recept")
+     */
+    public function receptPatient($date, $time, $empl)
+    {
+    	if (!isset($this->session->get('Account')[0]))
+            return $this->redirect('/sign/in/');
+
+        $employee = $this->getDoctrine()
+            ->getRepository(Employee::class)
+            ->findById($empl);
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $reception = new Reception();
+        $reception->setDate(new \DateTime($date));
+        $reception->setTime(\DateTime::createFromFormat('H:i', $time));
+        $reception->setIdPatient($this->getDoctrine()
+            ->getRepository(Patient::class)
+            ->findOneByAccountId($this->session->get('Account')[1]->getIdAccount()));
+        $reception->setIdEmployee($employee);
+        $reception->setVisited(0);
+        $entityManager->persist($reception);
+        $entityManager->flush();
+    	return $this->redirect('/profile/');
+    }
+
+    /**
+     * @Route("/reception/delete/{id}", name="ReceptionDelete")
+     */
+    public function deleteReception($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $reception = $this->getDoctrine()
+            ->getRepository(Reception::class)
+            ->findById($id);
+        $entityManager->remove($reception);
+        $entityManager->flush();
+        return $this->redirect('/profile/');
     }
 
     public function getArrayTime($beg, $end)

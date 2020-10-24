@@ -28,10 +28,10 @@
 										<a href="javascript:void(0);">{{Account.1.getName()|escape}}</a>
 									</h2>
 									<h6 class="d-block">
-										<a href="javascript:void(0)">1,500</a>
+										<a href="javascript:void(0)">{{Visits|escape}}</a>
 										Посещений</h6>
 									<h6 class="d-block">
-										<a href="javascript:void(0)">300</a>
+										<a href="javascript:void(0)">{{Records|escape}}</a>
 										Записей</h6>
 								</div>
 								<div class="ml-auto">
@@ -62,7 +62,9 @@
 												<label style="font-weight:bold;">ФИО</label>
 											</div>
 											<div class="col-md-8 col-6">
-												{{Account.1.getSurname()|escape}} {{Account.1.getName()|escape}} {{Account.1.getPatronymic()|escape}}
+												{{Account.1.getSurname()|escape}}
+												{{Account.1.getName()|escape}}
+												{{Account.1.getPatronymic()|escape}}
 											</div>
 										</div>
 										<hr/>
@@ -83,7 +85,9 @@
 												<label style="font-weight:bold;">Адрес</label>
 											</div>
 											<div class="col-md-8 col-6">
-												Улица {{Account.1.getIdAddress().Title|escape}}, Дом {{Account.1.getIdAddress().Number|escape}}
+												Улица
+												{{Account.1.getIdAddress().Title|escape}}, Дом
+												{{Account.1.getIdAddress().Number|escape}}
 											</div>
 										</div>
 										<hr/>
@@ -116,34 +120,62 @@
 										<hr/>
 
 									</div>
-									
 
 
 									<div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
-										<div class="row">
-											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">ФИО</label>
-											</div>
-											<div class="col-md-8 col-6">
-												{{Account.1.getSurname()|escape}} {{Account.1.getName()|escape}} {{Account.1.getPatronymic()|escape}}
-											</div>
-										</div>
+										<a href="#" class="btn btn-primary" style="margin-top:5px;margin-bottom:10px;">Сгенерировать отчет</a>
+										{% for reception in Receptions %}
+											{% if reception.getVisited %}
+												<div class="row reception-block">
+													<div class="col-sm-3 col-md-2 col-5">
+														<label style="font-weight:bold;">
+															{{reception.getDate()|date('Y-m-d')|escape}}
+															{{reception.getTime()|date('H:i')|escape}}
+														</label>
+													</div>
+													<div class="col-md-8 col-6">
+														{{reception.getIdEmployee().getSurname()|escape}}
+														{{reception.getIdEmployee().getName()|escape}}
+														{{reception.getIdEmployee().getPatronymic()|escape}}, Кабинет
+														{{ Cabinets[reception.getId()] }}
+													</div>
+												</div>
+											{% endif %}
+										{% endfor %}
 										<hr/>
 									</div>
 
 
 									<div class="tab-pane fade" id="reception" role="tabpanel" aria-labelledby="reception-tab">
-										<div class="row">
-											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">ФИО</label>
-											</div>
-											<div class="col-md-8 col-6">
-												{{Account.1.getSurname()|escape}} {{Account.1.getName()|escape}} {{Account.1.getPatronymic()|escape}}
-											</div>
-										</div>
+										{% for reception in Receptions %}
+											{% if not reception.getVisited() %}
+												<div class="row reception-block">
+													<div class="col-sm-3 col-md-2 col-5">
+														<label style="font-weight:bold;">
+															{{reception.getDate()|date('Y-m-d')|escape}}
+															{{reception.getTime()|date('H:i')|escape}}
+														</label>
+													</div>
+													<div class="col-md-8 col-6">
+														{{reception.getIdEmployee().getIdSpecialty().getTitle()}}
+														-
+														<span style="font-weight:bold; font-size:16px;">
+															{{reception.getIdEmployee().getSurname()|escape}}
+															{{reception.getIdEmployee().getName()|escape}}
+															{{reception.getIdEmployee().getPatronymic()|escape}}
+														</span>, Кабинет
+														{{ Cabinets[reception.getId()] }}
+														<br/>
+														<a href="{{path('ReceptionTicket', {id:reception.getId(), cabinet:Cabinets[reception.getId()]})}}" class="btn btn-primary" style="margin-top:5px;margin-bottom:10px;">Сгенерировать талон</a>
+														<br/>
+														<a href="#" class="btn btn-warning" style="margin-bottom:10px;">Изменить время</a>
+														<a href="{{path('ReceptionDelete', {id:reception.getId()})}}" class="btn btn-danger" style="margin-bottom:10px;">Удалить запись</a>
+													</div>
+												</div>
+											{% endif %}
+										{% endfor %}
 										<hr/>
 									</div>
-
 
 
 								</div>

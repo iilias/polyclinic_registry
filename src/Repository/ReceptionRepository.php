@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Reception;
+use App\Entity\Timetable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -23,15 +24,51 @@ class ReceptionRepository extends ServiceEntityRepository
      * @return Reception[] Returns an array of Reception objects
      */
 
-    public function findOneByDateTime($date, $time): ?Reception
+    public function findOneByDateTime($date, $time, $empl): ?Reception
     {
         return $this->createQueryBuilder('r')
             ->andWhere('r.date = :val')
             ->andWhere('r.time = :val2')
+            ->andWhere('r.idEmployee = :val3')
             ->setParameter('val', $date)
             ->setParameter('val2', $time)
+            ->setParameter('val3', $empl)
             ->getQuery()
             ->getOneOrNullResult()
+            ;
+    }
+
+    public function findByPatientId($id)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.idPatient = :val')
+            ->setParameter('val', $id)
+            ->orderBy('r.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findById($id) : ?Reception
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.id = :val')
+            ->setParameter('val', $id)
+            ->orderBy('r.id', 'ASC')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function updateVisitStatus($id, $status)
+    {
+        $this->createQueryBuilder('r')
+            ->update('App\Entity\Reception', 'r')
+            ->set('r.visited', $status)
+            ->where('r.id = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->execute()
             ;
     }
 
