@@ -19,9 +19,21 @@ class ResultsRepository extends ServiceEntityRepository
         parent::__construct($registry, Results::class);
     }
 
-    // /**
-    //  * @return Results[] Returns an array of Results objects
-    //  */
+    /**
+     * @return Results[] Returns an array of Results objects
+     */
+
+    public function findAllByIdReception($id)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.idReception = :val')
+            ->setParameter('val', $id)
+            ->orderBy('r.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /*
     public function findByExampleField($value)
     {

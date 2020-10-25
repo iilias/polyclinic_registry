@@ -138,6 +138,30 @@
 														{{reception.getIdEmployee().getName()|escape}}
 														{{reception.getIdEmployee().getPatronymic()|escape}}, Кабинет
 														{{ Cabinets[reception.getId()] }}
+														<br/>Диагноз:
+														{{reception.getIdDiagnosis().getTitle()}}
+														<br/>
+														{% if Results[reception.getId()] is defined %}
+															Анализы:
+															{% for item in Results[reception.getId()] %}
+																{{ item.getIdAnalyzes().getTitle() }},
+															{% endfor %}
+															<br/>
+															Процедуры:
+															{% for item in Results[reception.getId()] %}
+																{{ item.getIdProcedures().getTitle() }},
+															{% endfor %}
+														{% endif %}
+
+														<br/>
+
+														{% if Destinations[reception.getId()] is defined %}
+															Лекарства:
+															{% for item in Destinations[reception.getId()] %}
+																{{ item.getIdMedicines().getTitle() }},
+															{% endfor %}
+														{% endif %}
+
 													</div>
 												</div>
 											{% endif %}

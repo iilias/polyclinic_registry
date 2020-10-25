@@ -19,9 +19,21 @@ class DestinationRepository extends ServiceEntityRepository
         parent::__construct($registry, Destination::class);
     }
 
-    // /**
-    //  * @return Destination[] Returns an array of Destination objects
-    //  */
+    /**
+     * @return Destination[] Returns an array of Destination objects
+     */
+
+    public  function findAllByIdReception($id)
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.idReception = :val')
+            ->setParameter('val', $id)
+            ->orderBy('d.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /*
     public function findByExampleField($value)
     {

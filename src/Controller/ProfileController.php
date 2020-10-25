@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use App\Entity\Reception;
 use App\Entity\Timetable;
 use App\Entity\Days;
+use App\Entity\Results;
+use App\Entity\Destination;
 
 class ProfileController extends AbstractController
 {
@@ -49,6 +51,8 @@ class ProfileController extends AbstractController
         $recordsCount = 0;
         $visitsCount = 0;
         $cabinets = [];
+        $results = [];
+        $destinations = [];
         foreach ($receptions as $key => $recept)
         {
             if ($recept->getDate()->format('Y-m-d') < date('Y-m-d'))
@@ -73,6 +77,24 @@ class ProfileController extends AbstractController
                 ->findByIdDayEmployee($recept->getIdEmployee()->getId(), $dayId->getId());
             // номер приема -> кабинет
             $cabinets += [$recept->getId() => $current_cabinet[0]->getIdCabinet()->getNumber()];
+
+
+            $results +=
+                [
+                    $recept->getId() =>
+                    $this->getDoctrine()
+                         ->getRepository(Results::class)
+                         ->findAllByIdReception($recept->getId())
+                ];
+
+
+            $destinations +=
+                [
+                    $recept->getId() =>
+                    $this->getDoctrine()
+                         ->getRepository(Destination::class)
+                         ->findAllByIdReception($recept->getId())
+                ];
         }
 
 
@@ -83,7 +105,9 @@ class ProfileController extends AbstractController
             'Receptions' => $receptions,
             'Cabinets' => $cabinets,
             'Visits' => $visitsCount,
-            'Records' => $recordsCount
+            'Records' => $recordsCount,
+            'Results' => $results,
+            'Destinations' => $destinations
         ]);
     }
 
@@ -146,7 +170,31 @@ class ProfileController extends AbstractController
             fputcsv($f, ['ФИО:', $reception->getIdPatient()->getSurname(), $reception->getIdPatient()->getName(), $reception->getIdPatient()->getPatronymic()], ';');
             fputcsv($f, ["Услуга:", "Прием врача", $reception->getIdEmployee()->getIdSpecialty()->getTitle().'a'], ';');
             fputcsv($f, ["Врач:", $reception->getIdEmployee()->getSurname(), $reception->getIdEmployee()->getName(), $reception->getIdEmployee()->getPatronymic()], ';');
-            //fputcsv($f, ["Диагноз:", $reception->getIdDiagnosis()->getTitle()], ';');
+
+
+            $results = $this->getDoctrine()
+                ->getRepository(Results::class)
+                ->findAllByIdReception($reception->getId());
+            $analyzesText = '';
+            $proceduresText = '';
+            foreach ($results as $result)
+            {
+                $analyzesText .= $result->getIdAnalyzes()->getTitle() . ', ';
+                $proceduresText .= $result->getIdProcedures()->getTitle() . ', ';
+            }
+            fputcsv($f, ["Анализы:", $analyzesText], ';');
+            fputcsv($f, ["Процедуры:", $proceduresText], ';');
+
+
+            $destination = $this->getDoctrine()
+                ->getRepository(Destination::class)
+                ->findAllByIdReception($reception->getId());
+            $medicinesText = "";
+            foreach ($destination as $dest)
+            {
+                $medicinesText .= $dest->getIdMedicines()->getTitle() . ', ';
+            }
+            fputcsv($f, ["Лекарства:", $medicinesText], ';');
         }
         
         $response = new Response();

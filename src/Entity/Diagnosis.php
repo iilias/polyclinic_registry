@@ -24,7 +24,7 @@ class Diagnosis
     /**
      * @var string
      *
-     * @ORM\Column(name="Title", type="string", length=25, nullable=false)
+     * @ORM\Column(name="Title", type="string", length=255, nullable=false)
      */
     private $title;
 
