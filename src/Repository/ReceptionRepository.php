@@ -49,6 +49,17 @@ class ReceptionRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findByEmployeeId($id)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.idEmployee = :val')
+            ->setParameter('val', $id)
+            ->orderBy('r.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function findById($id) : ?Reception
     {
         return $this->createQueryBuilder('r')

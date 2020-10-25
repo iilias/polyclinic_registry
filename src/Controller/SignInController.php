@@ -55,6 +55,7 @@ class SignInController extends AbstractController
 
             if($account->getIdRole()->getTitle() == 'Врач')
             {
+                unset($user);
                 $user = $this->getDoctrine()
                     ->getRepository(Employee::class)
                     ->findOneByAccountId($account->getId());

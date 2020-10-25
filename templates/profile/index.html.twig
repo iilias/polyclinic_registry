@@ -27,12 +27,14 @@
 									<h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">
 										<a href="javascript:void(0);">{{Account.1.getName()|escape}}</a>
 									</h2>
-									<h6 class="d-block">
-										<a href="javascript:void(0)">{{Visits|escape}}</a>
-										Посещений</h6>
-									<h6 class="d-block">
-										<a href="javascript:void(0)">{{Records|escape}}</a>
-										Записей</h6>
+									{% if Account.0.getIdRole().getTitle() == "Пациент" %}
+										<h6 class="d-block">
+											<a href="javascript:void(0)">{{Visits|escape}}</a>
+											Посещений</h6>
+										<h6 class="d-block">
+											<a href="javascript:void(0)">{{Records|escape}}</a>
+											Записей</h6>
+									{% endif %}
 								</div>
 								<div class="ml-auto">
 									<input type="button" class="btn btn-primary d-none" id="btnDiscard" value="Discard Changes"/>
@@ -42,90 +44,48 @@
 
 						<div class="row">
 							<div class="col-12">
-								<ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
-									<li class="nav-item">
-										<a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Информация</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#connectedServices" role="tab" aria-controls="connectedServices" aria-selected="false">Посещенные приемы</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" id="reception-tab" data-toggle="tab" href="#reception" role="tab" aria-controls="reception" aria-selected="false">Записи на прием</a>
-									</li>
-								</ul>
-								<div class="tab-content ml-1" id="myTabContent">
-									<div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+								{% if Account.0.getIdRole().getTitle() == "Врач" %}
+									<ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+										<li class="nav-item">
+											<a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Открытые приемы</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#connectedServices" role="tab" aria-controls="connectedServices" aria-selected="false">Закрытые приемы</a>
+										</li>
+									</ul>
 
+									<div class="tab-content ml-1" id="myTabContent">
 
-										<div class="row">
-											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">ФИО</label>
-											</div>
-											<div class="col-md-8 col-6">
-												{{Account.1.getSurname()|escape}}
-												{{Account.1.getName()|escape}}
-												{{Account.1.getPatronymic()|escape}}
-											</div>
-										</div>
-										<hr/>
+										<div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
 
-										<div class="row">
-											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">Дата рождения</label>
-											</div>
-											<div class="col-md-8 col-6">
-												{{Account.1.getBirth()|date('Y-m-d')|escape}}
-											</div>
-										</div>
-										<hr/>
-
-
-										<div class="row">
-											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">Адрес</label>
-											</div>
-											<div class="col-md-8 col-6">
-												Улица
-												{{Account.1.getIdAddress().Title|escape}}, Дом
-												{{Account.1.getIdAddress().Number|escape}}
-											</div>
-										</div>
-										<hr/>
-										<div class="row">
-											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">Почта</label>
-											</div>
-											<div class="col-md-8 col-6">
-												{{Account.0.getEmail()|escape}}
-											</div>
-										</div>
-										<hr/>
-										<div class="row">
-											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">Полис</label>
-											</div>
-											<div class="col-md-8 col-6">
-												{{Account.1.getPolicy()|escape}}
-											</div>
-										</div>
-										<hr/>
-										<div class="row">
-											<div class="col-sm-3 col-md-2 col-5">
-												<label style="font-weight:bold;">Паспорт</label>
-											</div>
-											<div class="col-md-8 col-6">
-												{{Account.1.getPassport()|escape}}
-											</div>
-										</div>
-										<hr/>
+											{% for reception in Receptions %}
+												{% if not reception.getVisited() %}
+													<div class="row reception-block">
+														<div class="col-sm-3 col-md-2 col-5">
+															<label style="font-weight:bold;">
+																{{reception.getDate()|date('Y-m-d')|escape}}
+																{{reception.getTime()|date('H:i')|escape}}
+															</label>
+														</div>
+														<div class="col-md-8 col-6">
+															{{reception.getIdPatient.getSurname()|escape}}
+															{{reception.getIdPatient.getName()|escape}}
+															{{reception.getIdPatient.getPatronymic()|escape}}
+														</br>
+														Полис:
+														{{reception.getIdPatient.getPolicy()|escape}}
+													</div>
+												</div>
+												<hr/>
+											{% endif %}
+										{% endfor %}
 
 									</div>
-
 
 									<div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
-										<a href="{{path('ReceptionReport')}}" class="btn btn-primary" style="margin-top:5px;margin-bottom:10px;">Сгенерировать отчет</a>
+
 										{% for reception in Receptions %}
-											{% if reception.getVisited %}
+											{% if reception.getVisited() %}
 												<div class="row reception-block">
 													<div class="col-sm-3 col-md-2 col-5">
 														<label style="font-weight:bold;">
@@ -134,83 +94,194 @@
 														</label>
 													</div>
 													<div class="col-md-8 col-6">
-														{{reception.getIdEmployee().getSurname()|escape}}
-														{{reception.getIdEmployee().getName()|escape}}
-														{{reception.getIdEmployee().getPatronymic()|escape}}, Кабинет
-														{{ Cabinets[reception.getId()] }}
-														<br/>Диагноз:
-														{{reception.getIdDiagnosis().getTitle()}}
-														<br/>
-														{% if Results[reception.getId()] is defined %}
-															Анализы:
-															{% for item in Results[reception.getId()] %}
-																{{ item.getIdAnalyzes().getTitle() }},
-															{% endfor %}
-															<br/>
-															Процедуры:
-															{% for item in Results[reception.getId()] %}
-																{{ item.getIdProcedures().getTitle() }},
-															{% endfor %}
-														{% endif %}
-
-														<br/>
-
-														{% if Destinations[reception.getId()] is defined %}
-															Лекарства:
-															{% for item in Destinations[reception.getId()] %}
-																{{ item.getIdMedicines().getTitle() }},
-															{% endfor %}
-														{% endif %}
-
-													</div>
+														{{reception.getIdPatient.getSurname()|escape}}
+														{{reception.getIdPatient.getName()|escape}}
+														{{reception.getIdPatient.getPatronymic()|escape}}
+													</br>
+													Полик:
+													{{reception.getIdPatient.getPolicy()|escape}}
 												</div>
-											{% endif %}
-										{% endfor %}
-										<hr/>
-									</div>
-
-
-									<div class="tab-pane fade" id="reception" role="tabpanel" aria-labelledby="reception-tab">
-										{% for reception in Receptions %}
-											{% if not reception.getVisited() %}
-												<div class="row reception-block">
-													<div class="col-sm-3 col-md-2 col-5">
-														<label style="font-weight:bold;">
-															{{reception.getDate()|date('Y-m-d')|escape}}
-															{{reception.getTime()|date('H:i')|escape}}
-														</label>
-													</div>
-													<div class="col-md-8 col-6">
-														{{reception.getIdEmployee().getIdSpecialty().getTitle()}}
-														-
-														<span style="font-weight:bold; font-size:16px;">
-															{{reception.getIdEmployee().getSurname()|escape}}
-															{{reception.getIdEmployee().getName()|escape}}
-															{{reception.getIdEmployee().getPatronymic()|escape}}
-														</span>, Кабинет
-														{{ Cabinets[reception.getId()] }}
-														<br/>
-														<a href="{{path('ReceptionTicket', {id:reception.getId(), cabinet:Cabinets[reception.getId()]})}}" class="btn btn-primary" style="margin-top:5px;margin-bottom:10px;">Сгенерировать талон</a>
-														<br/>
-														<a href="{{path('ReceptionDate', {id:reception.getIdEmployee().getId()} )}}?Edit={{reception.getId()}}" class="btn btn-warning" style="margin-bottom:10px;">Изменить время</a>
-														<a href="{{path('ReceptionDelete', {id:reception.getId()})}}" class="btn btn-danger" style="margin-bottom:10px;">Удалить запись</a>
-													</div>
-												</div>
-											{% endif %}
-										{% endfor %}
-										<hr/>
-									</div>
-
+											</div>
+											<hr/>
+										{% endif %}
+									{% endfor %}
 
 								</div>
+
 							</div>
+						{% endif %}
+
+						{% if Account.0.getIdRole().getTitle() == "Пациент" %}
+							<ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+								<li class="nav-item">
+									<a class="nav-link active" id="basicInfo-tab" data-toggle="tab" href="#basicInfo" role="tab" aria-controls="basicInfo" aria-selected="true">Информация</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" id="connectedServices-tab" data-toggle="tab" href="#connectedServices" role="tab" aria-controls="connectedServices" aria-selected="false">Посещенные приемы</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" id="reception-tab" data-toggle="tab" href="#reception" role="tab" aria-controls="reception" aria-selected="false">Записи на прием</a>
+								</li>
+							</ul>
+							<div class="tab-content ml-1" id="myTabContent">
+								<div class="tab-pane fade show active" id="basicInfo" role="tabpanel" aria-labelledby="basicInfo-tab">
+
+									<div class="row">
+										<div class="col-sm-3 col-md-2 col-5">
+											<label style="font-weight:bold;">ФИО</label>
+										</div>
+										<div class="col-md-8 col-6">
+											{{Account.1.getSurname()|escape}}
+											{{Account.1.getName()|escape}}
+											{{Account.1.getPatronymic()|escape}}
+										</div>
+									</div>
+									<hr/>
+
+									<div class="row">
+										<div class="col-sm-3 col-md-2 col-5">
+											<label style="font-weight:bold;">Дата рождения</label>
+										</div>
+										<div class="col-md-8 col-6">
+											{{Account.1.getBirth()|date('Y-m-d')|escape}}
+										</div>
+									</div>
+									<hr/>
+
+
+									<div class="row">
+										<div class="col-sm-3 col-md-2 col-5">
+											<label style="font-weight:bold;">Адрес</label>
+										</div>
+										<div class="col-md-8 col-6">
+											Улица
+											{{Account.1.getIdAddress().Title|escape}}, Дом
+											{{Account.1.getIdAddress().Number|escape}}
+										</div>
+									</div>
+									<hr/>
+									<div class="row">
+										<div class="col-sm-3 col-md-2 col-5">
+											<label style="font-weight:bold;">Почта</label>
+										</div>
+										<div class="col-md-8 col-6">
+											{{Account.0.getEmail()|escape}}
+										</div>
+									</div>
+									<hr/>
+									<div class="row">
+										<div class="col-sm-3 col-md-2 col-5">
+											<label style="font-weight:bold;">Полис</label>
+										</div>
+										<div class="col-md-8 col-6">
+											{{Account.1.getPolicy()|escape}}
+										</div>
+									</div>
+									<hr/>
+									<div class="row">
+										<div class="col-sm-3 col-md-2 col-5">
+											<label style="font-weight:bold;">Паспорт</label>
+										</div>
+										<div class="col-md-8 col-6">
+											{{Account.1.getPassport()|escape}}
+										</div>
+									</div>
+									<hr/>
+								</div>
+							{% endif %}
+
+
+							{% if Account.0.getIdRole().getTitle() == "Пациент" %}
+								<div class="tab-pane fade" id="connectedServices" role="tabpanel" aria-labelledby="ConnectedServices-tab">
+									<a href="{{path('ReceptionReport')}}" class="btn btn-primary" style="margin-top:5px;margin-bottom:10px;">Сгенерировать отчет</a>
+									{% for reception in Receptions %}
+										{% if reception.getVisited %}
+											<div class="row reception-block">
+												<div class="col-sm-3 col-md-2 col-5">
+													<label style="font-weight:bold;">
+														{{reception.getDate()|date('Y-m-d')|escape}}
+														{{reception.getTime()|date('H:i')|escape}}
+													</label>
+												</div>
+												<div class="col-md-8 col-6">
+													{{reception.getIdEmployee().getSurname()|escape}}
+													{{reception.getIdEmployee().getName()|escape}}
+													{{reception.getIdEmployee().getPatronymic()|escape}}, Кабинет
+													{{ Cabinets[reception.getId()] }}
+													<br/>Диагноз:
+													{{reception.getIdDiagnosis().getTitle()}}
+													<br/>
+													{% if Results[reception.getId()] is defined %}
+														Анализы:
+														{% for item in Results[reception.getId()] %}
+															{{ item.getIdAnalyzes().getTitle() }},
+														{% endfor %}
+														<br/>
+														Процедуры:
+														{% for item in Results[reception.getId()] %}
+															{{ item.getIdProcedures().getTitle() }},
+														{% endfor %}
+													{% endif %}
+
+													<br/>
+
+													{% if Destinations[reception.getId()] is defined %}
+														Лекарства:
+														{% for item in Destinations[reception.getId()] %}
+															{{ item.getIdMedicines().getTitle() }},
+														{% endfor %}
+													{% endif %}
+
+												</div>
+											</div>
+										{% endif %}
+									{% endfor %}
+									<hr/>
+								</div>
+							{% endif %}
+
+
+							{% if Account.0.getIdRole().getTitle() == "Пациент" %}
+								<div class="tab-pane fade" id="reception" role="tabpanel" aria-labelledby="reception-tab">
+									{% for reception in Receptions %}
+										{% if not reception.getVisited() %}
+											<div class="row reception-block">
+												<div class="col-sm-3 col-md-2 col-5">
+													<label style="font-weight:bold;">
+														{{reception.getDate()|date('Y-m-d')|escape}}
+														{{reception.getTime()|date('H:i')|escape}}
+													</label>
+												</div>
+												<div class="col-md-8 col-6">
+													{{reception.getIdEmployee().getIdSpecialty().getTitle()}}
+													-
+													<span style="font-weight:bold; font-size:16px;">
+														{{reception.getIdEmployee().getSurname()|escape}}
+														{{reception.getIdEmployee().getName()|escape}}
+														{{reception.getIdEmployee().getPatronymic()|escape}}
+													</span>, Кабинет
+													{{ Cabinets[reception.getId()] }}
+													<br/>
+													<a href="{{path('ReceptionTicket', {id:reception.getId(), cabinet:Cabinets[reception.getId()]})}}" class="btn btn-primary" style="margin-top:5px;margin-bottom:10px;">Талон</a>
+													<br/>
+													<a href="{{path('ReceptionDate', {id:reception.getIdEmployee().getId()} )}}?Edit={{reception.getId()}}" class="btn btn-warning" style="margin-bottom:10px;">Изменить</a>
+													<a href="{{path('ReceptionDelete', {id:reception.getId()})}}" class="btn btn-danger" style="margin-bottom:10px;">Удалить</a>
+												</div>
+											</div>
+										{% endif %}
+									{% endfor %}
+									<hr/>
+								</div>
+							{% endif %}
+
+
 						</div>
-
-
 					</div>
-
 				</div>
+
+
 			</div>
+
 		</div>
 	</div>
-{% endblock %}
+</div></div>{% endblock %}

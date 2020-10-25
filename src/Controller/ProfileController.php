@@ -31,6 +31,8 @@ class ProfileController extends AbstractController
     {
         if(!isset($this->session->get('Account')[0]))
             return $this->redirect('/sign/in/');
+        if($this->session->get('Account')[0]->getIdRole()->getTitle() == 'Врач')
+            return $this->redirect('/profile/employee/');
 
         $receptions = $this->getDoctrine()
             ->getRepository(Reception::class)
@@ -108,6 +110,29 @@ class ProfileController extends AbstractController
             'Records' => $recordsCount,
             'Results' => $results,
             'Destinations' => $destinations
+        ]);
+    }
+
+    /**
+     * @Route("/profile/employee", name="ProfileEmployee")
+     */
+    public function employeeProfile()
+    {
+        if(!isset($this->session->get('Account')[0]))
+            return $this->redirect('/sign/in/');
+        if($this->session->get('Account')[0]->getIdRole()->getTitle() == 'Пациент')
+            return $this->redirect('/profile/');
+
+
+        $receptions = $this->getDoctrine()
+            ->getRepository(Reception::class)
+            ->findByEmployeeId($this->session->get('Account')[1]->getId());
+
+        return $this->render('profile/index.html.twig', [
+            'controller_name' => 'ProfileController',
+            'Title' => 'Личный кабинет сотрудника',
+            'Account' => $this->session->get('Account'),
+            'Receptions' => $receptions,
         ]);
     }
 
